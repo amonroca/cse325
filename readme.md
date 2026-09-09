@@ -58,24 +58,41 @@ The following is the working `CalculateSalesTotal` function from
 `DotNetFiles/mslearn-dotnet-files/Program.cs`:
 
 ```csharp
-double CalculateSalesTotal(IEnumerable<string> salesFiles)
+void GenerateSalesReport(string reportFile, string totalsFile, string storesDirectory, IEnumerable<string> salesFiles)
 {
-    double salesTotal = 0;
+    var report = new StringBuilder();
+    var actualSalesTotal = double.Parse(File.ReadAllText(totalsFile).Trim(), CultureInfo.InvariantCulture);
 
-    // Loop over each file path in salesFiles
+    report.AppendLine("Sales Summary");
+    report.AppendLine("------------------------");
+    report.AppendLine();
+    report.AppendLine($"  Total Sales: ${actualSalesTotal.ToString("N2", CultureInfo.InvariantCulture)}");
+    report.AppendLine();
+    report.AppendLine("Details:");
+
+    var fileDetails = new List<(string FilePath, double Total)>();
+    var maxTotalWidth = 0;
+
     foreach (var file in salesFiles)
     {
-        // Read the contents of the file
-        string salesJson = File.ReadAllText(file);
-
-        // Parse the contents as JSON
+        var salesJson = File.ReadAllText(file);
         SalesData? data = JsonConvert.DeserializeObject<SalesData?>(salesJson);
-
-        // Add the amount found in the Total field to the salesTotal variable
-        salesTotal += data?.Total ?? 0;
+        var fileSalesTotal = data?.Total ?? data?.OverallTotal ?? 0;
+        var relativeFilePath = Path.GetRelativePath(storesDirectory, file);
+        var formattedTotal = $"${fileSalesTotal.ToString("N2", CultureInfo.InvariantCulture)}";
+        maxTotalWidth = 35 - (relativeFilePath.Length + formattedTotal.Length);
+        // The next two lines aren't very professional, but work well for a school project
+        var spaces = new string(' ', maxTotalWidth);
+        fileDetails.Add((relativeFilePath + ":" + spaces, fileSalesTotal));
     }
 
-    return salesTotal;
+    foreach (var detail in fileDetails)
+    {
+        var formattedTotal = $"${detail.Total.ToString("N2", CultureInfo.InvariantCulture)}";
+        report.AppendLine($"  {detail.FilePath} {formattedTotal}");
+    }
+
+    File.WriteAllText(reportFile, report.ToString());
 }
 ```
 
