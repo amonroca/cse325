@@ -41,7 +41,20 @@ Content-Type: application/json
 
 ###
 
+GET {{ContosoPizza_HostAddress}}/pizza/3
+Accept: application/json
+
+###
+
 DELETE {{ContosoPizza_HostAddress}}/pizza/3
 Accept: application/json
 
 ###
+
+POST {{ContosoPizza_HostAddress}}/pizza/
+Content-Type: application/json
+
+{
+    "name": "Cheese",
+    "isGlutenFree": true
+}

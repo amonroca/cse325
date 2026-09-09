@@ -26,14 +26,31 @@ The additional record for the POST request is:
 
 ```json
 {
-  "id": 3,
-  "name": "Hawaiian",
+  "id": 4,
+  "name": "Cheese",
   "isGlutenFree": false
 }
 ```
 
 The API assigns the next available identifier when this record is posted. The
 controller returns `201 Created` and a link to the corresponding GET action.
+
+### 1.1 Proof of Test
+
+API response for the POST verb
+![API Response for POST](ContosoPizza/images/Captura%20de%20tela%202026-09-09%20174341.png)
+
+API response for the PUT verb
+![API Response for PUT](ContosoPizza/images/create-new-item.png)
+
+API response for the GET verb
+![API Response for GET](ContosoPizza/images/Captura%20de%20tela%202026-09-09%20174224.png)
+
+API response for the DELETE verb
+![API Response for DELETE](ContosoPizza/images/Captura%20de%20tela%202026-09-07%20162843.png)
+
+Additional GET response for the created pizza
+![API Response for created pizza](ContosoPizza/images/Captura%20de%20tela%202026-09-07%20163026.png)
 
 ## 2. Working sales summary function for Part 2
 
@@ -61,3 +78,8 @@ double CalculateSalesTotal(IEnumerable<string> salesFiles)
     return salesTotal;
 }
 ```
+
+### 2.1 Proof of Test
+
+Sales summary report
+![Sales summary report](DotNetFiles/mslearn-dotnet-files/images/Captura%20de%20tela%202026-09-09%20175702.png)
